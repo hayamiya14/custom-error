@@ -2,12 +2,6 @@
 
 自作エラーを判定するための基底エラークラスを提供します。
 
-## Install
-
-```shell
-npm i git+http://gitbucket.sigsig.home/git/libs-typescript/custom-error.git
-```
-
 ## How To Use
 
 ### Base
@@ -38,7 +32,7 @@ try {
 以下はバリデーションエラーを例にしたパターンです。
 
 ```typescript
-import { CustomError } from "custom-error-ts";
+import { CustomError } from "custom-error";
 
 export class ValidationError extends CustomError {
   // 独自のエラー名を設定
