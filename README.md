@@ -1,53 +1,57 @@
+# custom-error
+
 ## Overview
 
-自作エラーを判定するための基底エラークラスを提供します。
+Provides a base error class for creating and identifying custom errors.
 
-## How To Use
+## How to Use
 
-### Base
+### Base Usage
 
 ```typescript
+import { CustomError } from "custom-error";
+
 function doSomethingRisky() {
-  // 何らかのエラーが発生した場合に CustomError を投げる
-  throw new CustomError("エラーが発生しました");
+  // Throw a CustomError when something goes wrong
+  throw new CustomError("An error has occurred");
 }
 
 try {
   doSomethingRisky();
 } catch (err) {
   if (CustomError.is(err)) {
-    // CustomError として安全に扱える
+    // Safely handle CustomError instances
     console.error(`CustomError: ${err.message}`);
     console.error(`type: ${err.type}`);
   } else {
-    // その他のエラー／例外
+    // Handle other errors
     console.error("Unknown error:", err);
   }
 }
 ```
 
-### Extends
+### Extending for Project-Specific Errors
 
-各プロジェクト固有のエラーを定義するには、`CustomError` を継承してください。
-以下はバリデーションエラーを例にしたパターンです。
+To define project-specific errors, extend the `CustomError` class. The example below shows a validation error implementation.
 
 ```typescript
 import { CustomError } from "custom-error";
 
 export class ValidationError extends CustomError {
-  // 独自のエラー名を設定
+  // Set a custom error name
   static readonly NAME = "ValidationError";
   readonly type = ValidationError.NAME;
 
-  // 追加プロパティも自由に定義できる
+  // Add extra properties as needed
   constructor(
     message: string,
     public readonly field: string,
   ) {
     super(message);
+    Object.setPrototypeOf(this, ValidationError.prototype);
   }
 
-  // 型ガードをオーバーライド
+  // Override the type guard if needed
   static is(error: unknown): error is ValidationError {
     return error instanceof ValidationError;
   }
@@ -56,8 +60,8 @@ export class ValidationError extends CustomError {
 
 ```typescript
 try {
-  // ...フォーム値チェックなど
-  throw new ValidationError("値が不正です", "email");
+  // Example form validation
+  throw new ValidationError("Invalid value provided", "email");
 } catch (err) {
   if (ValidationError.is(err)) {
     console.warn(`Field: ${err.field} — ${err.message}`);
@@ -71,23 +75,23 @@ try {
 
 ## API
 
-`class CustomError extends Error`
+### `class CustomError extends Error`
 
 - `static readonly NAME: string`
-  デフォルトのエラー名。内部的には `CustomError` が設定されています。
+  Default error name (`"CustomError"`).
 
 - `readonly type: string`
-  インスタンスプロパティとして `NAME` と同じ値を保持します。
+  Instance property holding the same value as `NAME`.
 
 - `constructor(message: string)`
-  標準の `Error` と同様に、エラーメッセージを受け取ります。
+  Accepts an error message, just like the standard `Error` constructor.
 
 - `static is(error: unknown): error is CustomError`
-  与えられたオブジェクトが `CustomError` インスタンスかどうかを判定します。
+  Type guard that checks whether the given value is an instance of `CustomError`.
 
 ```typescript
-// 型ガードとして使える
+// Example usage of the type guard:
 if (CustomError.is(err)) {
-  // err は CustomError 型として扱える
+  // err is treated as CustomError here
 }
 ```
