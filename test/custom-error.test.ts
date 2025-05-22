@@ -1,4 +1,4 @@
-import { CustomError } from "../src/CustomError.js";
+import { CustomError } from "../src/custom-error.js";
 
 describe("CustomError", () => {
   it("指定したメッセージでインスタンスを生成できる", () => {
