@@ -1,1 +1,1 @@
-export * from "./CustomError.js";
+export * from "./custom-error.js";
