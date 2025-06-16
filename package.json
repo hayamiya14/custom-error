@@ -1,9 +1,13 @@
 {
   "name": "@hayamiya14/custom-error",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "",
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hayamiya14/custom-error.git"
+  },
   "license": "ISC",
   "author": "hayamiya",
   "type": "module",
@@ -38,5 +42,9 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2"
+  },
+  "publishConfig": {
+    "@hayamiya14:registry": "https://npm.pkg.github.com/",
+    "access": "public"
   }
 }
